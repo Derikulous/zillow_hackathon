@@ -1,13 +1,13 @@
 North Seattle
 Broadview
 Bitter Lake
-North Beach / Blue Ridge
+North Beach
 Crown Hill
 Greenwood
 Northgate
 Haller Lake
 Pinehurst
-North College Park (Licton Springs)
+North College Park
 Maple Leaf
 Lake City
 Cedar Park
@@ -24,7 +24,7 @@ Bryant
 Windermere
 Hawthorne Hills
 Laurelhurst
-University District ("U. District")
+University District
 University Village
 Wallingford
 Northlake
@@ -49,9 +49,9 @@ East Queen Anne
 Lower Queen Anne
 West Queen Anne
 Capitol Hill
-Portage Bay / Roanoke
+Portage Bay
 Broadway
-Pike-Pine Corridor / Pike/Pine[97][98][99]
+Pike-Pine Corridor
 Montlake
 Stevens
 Interlaken
@@ -71,11 +71,11 @@ Pike-Market
 Central Business District
 First Hill
 Pioneer Square
-International District ("ID")
+International District
 Yesler Terrace
 Central Waterfront
 West Edge
-Central Area[120] / Central District ("CD")
+Central Area
 Mann
 Minor
 Cherry Hill & Squire Park
@@ -83,25 +83,25 @@ Atlantic
 Judkins Park
 Madrona
 Madrona Valley
-Harrison[120] / Denny-Blaine[120]
+Harrison
 Washington Park
-Leschi[120]
+Leschi
 South End
 Rainier Valley
 Mount Baker
 Columbia City
 Hillman City
 Brighton
-Dunlap / Othello
-Rainier Beach / Atlantic City Beach
-Rainier View / Lakeridge
+Dunlap
+Rainier Beach
+Rainier View
 Seward Park
 Lakewood
 Beacon Hill
 North Beacon Hill
-Mid Beacon Hill (Maplewood)
-Holly Park / NewHolly
-South Beacon Hill / Van Asselt
+Mid Beacon Hill
+Holly Park
+South Beacon Hill
 Industrial District
 SoDo
 Harbor Island
@@ -109,9 +109,9 @@ Georgetown
 South Park
 West Seattle
 Alki Point
-North Admiral / Admiral District
-Junction / West Seattle Junction / Alaska Junction
-Seaview / Mee-Kwa-Mooks
+North Admiral
+Junction
+Seaview
 Fairmount Park
 Genesee
 Gatewood
