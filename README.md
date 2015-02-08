@@ -2,15 +2,10 @@
 
 **HopCity** has developed a neighborhood matchmaking technology that uses machine learning from dynamic, publicly available data to better match people to a new neighborhood before they move.  To help over 40 million people moving every year,  HopCity asks the user's current location to recommend neighborhoods in the city they would like to move. The matching algorithm shows the top neighborhoods based on various characteristics analyzed from thousands of data points, and can be further refined via filters interesting to the user, e.g. age, income, attractions, restaurants, nightlife, safety, etc.
 
-![Landing page][logo]
-![Results page][logo2]
-![Neighborhood page][logo3]
-![Yelp page][logo4]
-
-[logo]: http://i.imgur.com/88aniHk.jpg "Landing page"
-[logo2]: http://imgur.com/kqyCIqz "Results page"
-[logo3]: http://imgur.com/fsfGB7b "Neighborhood page"
-[logo4]: http://imgur.com/LR85yK2 "Yelp recommendations"
+![landing](http://i.imgur.com/88aniHk.jpg "Landing page")
+![results](http://imgur.com/kqyCIqz "Results page")
+![neighborhood](http://imgur.com/fsfGB7b "Neighborhood page")
+![yelp](http://imgur.com/LR85yK2 "Yelp recommendations")
 
 The application was created on February 6-8th, 2015. You can view it live [here](http://107.170.241.95/ "HopCity").
 
