@@ -8,6 +8,8 @@ from venues import *
 import string
 from pprint import pprint
 
+from recommender import Recommender, NumFeaturizer, SpecFeaturizer, Data
+
 app = Flask(__name__)
 
 try:
@@ -32,33 +34,50 @@ def getPhotos(lat, lng):
 def home():
     return render_template('home.html', name='Hello')
 
-def try_get_neighborhood(address):
+def try_get_neighborhood_city(address):
     if address is None:
       return ''
 
     location = geocoder.google(address)
 
     if location.ok:
-      return location.neighborhood
+      return (location.neighborhood, location.city)
     else:
-      return ''
+      return (None, None)
 
 @app.route("/results", methods=["POST", "GET"])
 def results():
-    if request.method == 'POST':
-      # We're getting data from user
-      neighborhood = try_get_neighborhood(request.form['current_address'])
-      print neighborhood, request.form['current_address'], request.form['future_city']
-      pass
-    else:
-      pass
+    use_default = True
+    enable_recommender = True
 
-    # For the demo
-    recommendations = [
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
-    ]
+    if request.method == 'POST':
+      res = try_get_neighborhood_city(request.form['current_address'])
+      source_neighborhood = res[0]
+      source_city = res[1]
+
+      target_city = request.form['future_city'].strip()
+      if len(target_city) == 0:
+        target_city = 'Seattle'
+
+      if enable_recommender and not source_neighborhood is None:
+        print "Recommendations for moving from %s, %s to %s ..." % (source_neighborhood, source_city, target_city)
+
+        recommender = Recommender.load()
+
+        result = recommender.recommend(source_city, source_neighborhood, target_city)
+        recommendations = [ r for r, score in result ]
+
+        if len(recommendations) > 0:
+          use_default = False
+
+    if use_default:
+      # For the demo
+      recommendations = [
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont'),
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Wallingford'),
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Lower Queen Anne')
+      ]
 
     return render_template('results.html', recommendations=recommendations)
 

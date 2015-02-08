@@ -13,11 +13,14 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 class Neighborhood:
   @staticmethod
   def get_for_city_and_neighborhood(city, neighborhood):
+    if city == 'SF':
+      city = 'San Francisco'
+
     for n in Neighborhood.get_neighborhoods_in_city(city):
       if n.name.lower() == neighborhood.lower():
         return n
 
-    raise KeyError("Did not find neighborhood: %s" % neighborhood)
+    raise KeyError("Did not find neighborhood %s in city %s" % (neighborhood, city))
 
   @staticmethod
   def get_neighborhoods_in_city(city):
@@ -71,7 +74,7 @@ class Neighborhood:
     if self.name == 'Wallingford':
       return "Wallingford is a neighborhood in north central Seattle, Washington, named after John Noble Wallingford, Jr. Major annual events in the neighborhood include the Wallingford Kiddie Parade as part of Seafair, the Wallingford Wurst Festival run by St Benedict's Church, and the Family Fourth fireworks show at Gas Works Park. Smaller events include Seattle Tilth's chicken coop tour and the Wallingford Neighborhood office's garden and home tours."
     if self.name == 'Fremont':
-      return "Fremont is a neighborhood in Seattle, Washington. Originally a separate city, it was annexed to Seattle in 1891, and is named after Fremont, Nebraska, the hometown of two of its founders Luther H. Griffith and Edward Blewett."  
+      return "Fremont is a neighborhood in Seattle, Washington. Originally a separate city, it was annexed to Seattle in 1891, and is named after Fremont, Nebraska, the hometown of two of its founders Luther H. Griffith and Edward Blewett."
     if self.name == 'Lower Queen Anne':
       return "Queen Anne Hill is a neighborhood and geographic feature in Seattle, Washington, northwest of downtown. The neighborhood sits on the highest named hill in the city, with a maximum elevation of 456 feet (139 m). It covers an area of 7.3 square kilometers (2.8 sq mi), and has a population of about 28,000. Queen Anne is bordered by Belltown to the south, Lake Union to the east, the Lake Washington Ship Canal to the north and Magnolia to the west."
     return ""

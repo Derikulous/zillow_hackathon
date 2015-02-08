@@ -102,7 +102,12 @@ class Recommender(object):
     self.num_featurizer.max_dim_count = 10
     self.num_featurizer.featurize()
 
-  def find_top_similar(self, n, city, max = 3):
+  def recommend(self, city, neighborhood, target_city):
+    n = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
+    return self.find_top_similar(n, target_city)
+
+
+  def find_top_similar(self, n, city, max = 5):
     res = []
 
     v_spec = self.spec_featurizer.featurize_single(n)
