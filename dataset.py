@@ -1,25 +1,11 @@
+import os
 from pprint import pprint
 
 from scrapy.selector import Selector
 
-################################################################################
-# Helpers
-################################################################################
+from zillow_hackathon.data.parsers import xfirst, to_float
 
-def xfirst(sel, xpath, default=None):
-    x = sel.xpath(xpath).extract()
-    v = first(x, default)
-
-    if v:
-        return v.strip()
-    else:
-        return default
-
-def first(iterable, default=None):
-    if iterable:
-        for item in iterable:
-            return item
-    return default
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 ################################################################################
 # Neighborhood data
@@ -37,9 +23,9 @@ class Neighborhood:
   @staticmethod
   def get_neighborhoods_in_city(city):
     if city == 'Seattle':
-      fname = 'data/output/sea_nbr_zillow_raw.tsv'
+      fname = os.path.join(SCRIPT_DIR, 'data/output/sea_nbr_zillow_raw.tsv')
     elif city == 'San Francisco':
-      fname = 'data/output/sf_nbr_zillow_raw.tsv'
+      fname = os.path.join(SCRIPT_DIR, 'data/output/sf_nbr_zillow_raw.tsv')
     else:
       raise ValueError("city should be Seattle or San Francisco")
 
@@ -70,11 +56,11 @@ class Neighborhood:
 
   @property
   def median_income(self):
-    return xfirst(self.sel, '//*[name="Median Household Income"]//neighborhood//text()')
+    return to_float(xfirst(self.sel, '//*[name="Median Household Income"]//neighborhood//text()'))
 
   @property
   def median_age(self):
-    return xfirst(self.sel, '//*[name="Median Age"]//neighborhood//text()')
+    return to_float(xfirst(self.sel, '//*[name="Median Age"]//neighborhood//text()'))
 
 ################################################################################
 # Ad Hoc test
