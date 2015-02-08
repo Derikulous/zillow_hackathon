@@ -12,6 +12,8 @@
 
 The application was created on February 6-8th, 2015. You can view it live [here](http://107.170.241.95/ "HopCity").
 
+Video Demo: http://youtu.be/vVrgYxbyRvw
+
 ## Challenge and Approach
 
 Our submission is for *Challenge #3: helping first-time homebuyers*. How do I find a home that meets my needs, within my budget, in an area that fits my priorities?
