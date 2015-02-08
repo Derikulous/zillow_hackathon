@@ -38,9 +38,9 @@ We made use of:
   2. *Machine Learning* including Latent Semantic Analysis, Clustering and Vector Space Model to implement a simplified prototype of an unsupervised Recommendation algorithm tested empirically
   3. *Flickr API* to display neighborhood images that are dynamic, like the nature of these communities!
   4. *Yelp API* to display cafes, restaurants, nightclubs, gyms, parks, theaters and markets - all the attributes important to selecting a neighborhood. We show the top results for each category
-  5. Google Images API to pull in images for each neighborhood on the results page
-  6. Freebase Knowledge Graph API to pull additional structural data about neighborhoods like description, etc.
-  6. IPython Notebook contains some code for data clustering and dimensionality reduction
+  5. *Google Images API* to pull in images for each neighborhood on the results page
+  6. *Freebase Knowledge Graph API* to pull additional structural data about neighborhoods like description, etc.
+  6. *IPython Notebook* contains some code for data clustering and dimensionality reduction
 
 ## Contributing
 
