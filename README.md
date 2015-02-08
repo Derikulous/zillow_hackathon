@@ -40,7 +40,9 @@ We made use of:
   4. *Yelp API* to display cafes, restaurants, nightclubs, gyms, parks, theaters and markets - all the attributes important to selecting a neighborhood. We show the top results for each category
   5. *Google Images API* to pull in images for each neighborhood on the results page
   6. *Freebase Knowledge Graph API* to pull additional structural data about neighborhoods like description, etc.
-  6. *IPython Notebook* contains some code for data clustering and dimensionality reduction
+  7. *IPython Notebook* contains some code for data clustering and dimensionality reduction
+
+![Clustering Example](http://i.imgur.com/kDOjdK0.png "Clustering Example")
 
 ## Contributing
 
