@@ -42,3 +42,5 @@ In order to build & run our app:
 	pip install -r requirements.txt
 
 Our code is licensed under the [MIT License](license.md). Pull requests will be accepted to this repo, pending review and approval.
+
+Icon credit goes to Rohan Gupta & the Noun Project (Creative Commons CC BY 3.0)
