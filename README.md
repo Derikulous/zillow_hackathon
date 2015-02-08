@@ -2,6 +2,10 @@
 
 **Hopcity** is an application designed to better match people to a neighborhood before they move from their current city. The app takes as input the users current and future neighborhood. The matching algorithm is designed solely around the users' initial input, but can be further refined via certain factors that are interesting to the user, e.g. age, income, nightlife, safety.
 
+![Landing page][logo]
+
+[logo]: http://i.imgur.com/88aniHk.jpg "Landing page"
+
 The application was created on February 6-8th, 2015. You can view it live [Chris to provide link when we get it live](https://www.google.com "some link").
 
 ## Challenge and Approach
