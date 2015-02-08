@@ -3,10 +3,11 @@ import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
 import geocoder
-from dataset import Neighborhood
+from zillow_hackathon.dataset import Neighborhood
 from venues import *
 import string
 from pprint import pprint
+import pickle
 
 from recommender import Recommender, NumFeaturizer, SpecFeaturizer, Data
 
@@ -27,7 +28,7 @@ def getYelp(query, location, lat_lng):
     return search_results['businesses']
 
 def getPhotos(lat, lng):
-    photos = list(flickr_api.walk(privacy_filter=1, lat=47.683937, lon=-122.27431, radius=5, per_page=5))
+    photos = list(flickr_api.walk(privacy_filter=1, lat=lat, lon=lng, radius=5, per_page=5))
     return photos
 
 @app.route("/")
@@ -47,28 +48,34 @@ def try_get_neighborhood_city(address):
 
 @app.route("/results", methods=["POST", "GET"])
 def results():
+    print request.form
     use_default = True
     enable_recommender = True
 
-    if request.method == 'POST':
-      res = try_get_neighborhood_city(request.form['current_address'])
-      source_neighborhood = res[0]
-      source_city = res[1]
+    try:
+      if request.method == 'POST':
+        res = try_get_neighborhood_city(request.form['current_address'])
+        source_neighborhood = res[0]
+        source_city = res[1]
 
-      target_city = request.form['future_city'].strip()
-      if len(target_city) == 0:
-        target_city = 'Seattle'
+        print "Geocoder found neighborhood", source_neighborhood, "in", source_city
 
-      if enable_recommender and not source_neighborhood is None:
-        print "Recommendations for moving from %s, %s to %s ..." % (source_neighborhood, source_city, target_city)
+        target_city = request.form['future_city'].strip()
+        if len(target_city) == 0:
+          target_city = 'Seattle'
 
-        recommender = Recommender.load()
+        if enable_recommender and not source_neighborhood is None:
+          print "Recommendations for moving from %s, %s to %s ..." % (source_neighborhood, source_city, target_city)
 
-        result = recommender.recommend(source_city, source_neighborhood, target_city)
-        recommendations = [ r for r, score in result ]
+          recommender = Recommender.load()
 
-        if len(recommendations) > 0:
-          use_default = False
+          result = recommender.recommend(source_city, source_neighborhood, target_city)
+          recommendations = [ r for r, score in result ]
+
+          if len(recommendations) > 0:
+            use_default = False
+    except Exception as e:
+      print "Exception: ", e
 
     if use_default:
       # For the demo
@@ -81,10 +88,12 @@ def results():
 
     return render_template('results.html', recommendations=recommendations)
 
-@app.route("/explore/<city>/<neighborhood>")
-def explore(city, neighborhood):
-    ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
-
+def get_yelp_for_neighborhood(ds, city):
+  yelp_cache_file = 'data/yelp_cache/' + ds.name + '.pickle'
+  try:
+    with open(yelp_cache_file) as f:
+      venues = pickle.load(f)
+  except IOError:
     location_query = ds.name + ', ' + city
     venues = [
       VenueType("Restaurants", getYelp('restaurants', location_query, ds.lat_lng)),
@@ -96,6 +105,17 @@ def explore(city, neighborhood):
       VenueType("Theaters", getYelp('theaters', location_query, ds.lat_lng)),
       VenueType("Markets", getYelp('markets', location_query, ds.lat_lng))
     ]
+
+    with open(yelp_cache_file, 'wb') as f:
+      pickle.dump(venues, f)
+
+  return venues
+
+@app.route("/explore/<city>/<neighborhood>")
+def explore(city, neighborhood):
+    ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
+
+    venues = get_yelp_for_neighborhood(ds, city)
 
     # Hardcode for demo, otherwise get from flickr
     if ds.name == 'Capitol Hill':
