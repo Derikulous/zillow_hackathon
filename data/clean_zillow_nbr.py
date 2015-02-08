@@ -74,5 +74,11 @@ def process_files():
         if not obj is None:
           yield obj
 
+seen = set()
 for e in process_files():
+  key = '%s-%s-%s' % (e['state'], e['city'], e['name'])
+  if key in seen:
+    continue
+
+  seen.add(key)
   print '%s\t%s\t%s\t%s' % (e['state'], e['city'], e['name'], json.dumps(e))
