@@ -2,3 +2,5 @@ include
 bin
 lib
 .Python
+secrets.yaml
+*.pyc
