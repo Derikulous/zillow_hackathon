@@ -1,0 +1,38 @@
+{% extends "website_layout.html" %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <div class="thumbnail capHill">
+      {% set best_match = recommendations[0][0] %}
+      {% set best_score = recommendations[0][1] %}
+
+      <img src="{{ best_match.google_image }}">
+      <p>98% fit <br> Median Rent = $1500
+      </p>
+      <center>
+        <h3>{{ best_match.name }}</h3>
+      </center>
+
+      <p><a href="/explore/{{best_match.city}}/{{best_match.name}}" class="btn btn-success btn-block" role="button">Learn More</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  {% for r, sim in recommendations[1:4] %}
+    <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+        <img src="{{ r.google_image }}" alt="{{r.name}}">
+        <div class="caption">
+          <h3>{{ r.name }}</h3>
+          <p>{{ (sim * 100) | int }}% Fit <br> Median Rent = $1000</p>
+          <p><a href="/explore/{{r.city}}/{{r.name}}" class="btn btn-success btn-block" role="button">Learn More</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

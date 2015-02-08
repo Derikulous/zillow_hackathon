@@ -52,4 +52,6 @@
 
 {% block javascript_footer %}
   $('#current_address').geocomplete({ types: ['geocode'], componentRestrictions: { country: 'us' }, details: 'form' });
+
+  $('#future_city').geocomplete({ types: ['geocode'], componentRestrictions: { country: 'us' } });
 {% endblock %}

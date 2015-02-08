@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 
 from pprint import pprint
 from data.parsers import *
@@ -91,7 +92,33 @@ class Neighborhood:
       return "564343097442594818"
     return "0"
 
+  @property
+  def google_image(self):
+    query = '%s, %s' % (self.name, self.city)
+    query = query.replace(' ', '+')
 
+    url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&start=0' % query
+
+    print 'Calling Google Image Search for: %s ...' % query
+    response = requests.get(url)
+    print 'Image Search Done'
+
+    image_res = json.loads(response.text)
+
+    images = image_res['responseData']['results']
+
+    best_image = None
+    best_width = 0
+
+    for im in images:
+      if im['width'] > best_width:
+        best_width = im['width']
+        best_image = im
+
+    if best_image > 0:
+      return best_image['unescapedUrl']
+    else:
+      return ''
 
 ################################################################################
 # Ad Hoc test

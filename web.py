@@ -48,15 +48,24 @@ def try_get_neighborhood_city(address):
 @app.route("/results", methods=["POST", "GET"])
 def results():
     use_default = True
-    enable_recommender = True
+    enable_recommender = False
 
     if request.method == 'POST':
-      res = try_get_neighborhood_city(request.form['current_address'])
-      source_neighborhood = res[0]
-      source_city = res[1]
+      geo_res = try_get_neighborhood_city(request.form['current_address'])
+      source_neighborhood = geo_res[0]
+      source_city = geo_res[1]
+
+      enable_recommender = bool(request.form.get('algo', False))
 
       target_city = request.form['future_city'].strip()
-      if len(target_city) == 0:
+      if len(target_city) > 0:
+        geo_res = try_get_neighborhood_city(target_city)
+        if not geo_res is None:
+          target_city = geo_res[1]
+          if target_city == 'SF':
+            target_city = 'San Francisco'
+
+      if target_city is None:
         target_city = 'Seattle'
 
       if enable_recommender and not source_neighborhood is None:
@@ -65,7 +74,8 @@ def results():
         recommender = Recommender.load()
 
         result = recommender.recommend(source_city, source_neighborhood, target_city)
-        recommendations = [ r for r, score in result ]
+        recommendations = [ (r, score) for r, score in result ]
+        print "Found %d recommendations" % len(recommendations)
 
         if len(recommendations) > 0:
           use_default = False
@@ -73,13 +83,16 @@ def results():
     if use_default:
       # For the demo
       recommendations = [
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Wallingford'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Lower Queen Anne')
+        (Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'), 0.84),
+        (Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont'), 0.82),
+        (Neighborhood.get_for_city_and_neighborhood('Seattle', 'Wallingford'), 0.78),
+        (Neighborhood.get_for_city_and_neighborhood('Seattle', 'Lower Queen Anne'), 0.72)
       ]
 
-    return render_template('results.html', recommendations=recommendations)
+    if enable_recommender:
+      return render_template('results_dyn.html', recommendations=recommendations)
+    else:
+      return render_template('results_dyn.html', recommendations=recommendations)
 
 @app.route("/explore/<city>/<neighborhood>")
 def explore(city, neighborhood):
