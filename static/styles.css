@@ -39,6 +39,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100%;
   overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 body {
   color: #fff;
@@ -117,7 +118,6 @@ body {
   }
 }
 
-
 /*
  * Cover
  */
@@ -187,4 +187,8 @@ border-style: none;
   .cover-container {
     width: 700px;
   }
+}
+
+.resultList {
+  font-family: 'Roboto', sans-serif;
 }

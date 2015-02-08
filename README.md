@@ -40,3 +40,5 @@ In order to build & run our app:
 	virtualenv venv
 	source venv/bin/activate
 	pip install -r requirements.txt
+
+Our code is licensed under the [MIT License](license.md). Pull requests will be accepted to this repo, pending review and approval.
