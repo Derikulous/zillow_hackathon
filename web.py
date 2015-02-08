@@ -26,14 +26,20 @@ def getPhotos(lat, lng):
 def home():
     return render_template('home.html', name='Hello')
 
-@app.route("/results", methods=["POST"])
+@app.route("/results", methods=["POST", "GET"])
 def results():
-    abort(404)
+    recommendations = [
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
+    ]
+
+    return render_template('results.html', recommendations=recommendations)
 
 @app.route("/explore/<city>/<neighborhood>")
 def explore(city, neighborhood):
     ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
-    return render_template('explore.html', nb=ds)
+    return render_template('explore.html', nb=ds, photos=[])
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
