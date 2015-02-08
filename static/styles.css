@@ -2,11 +2,6 @@
   margin-top: -10px;
 }
 
-img {
-  float: left;
-  max-width: 100%;
-  height: auto;
-}
 /*
  * Globals
  */
@@ -39,6 +34,7 @@ a:hover {
 html,
 body {
   height: 100%;
+  background-position: 0 50px;
   background-image: url("Homepage_splash.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
