@@ -125,11 +125,23 @@ def explore(city, neighborhood):
         "/static/caphill/caphill2_900x500-fixed.jpg"
       ]
     if ds.name == 'Wallingford':
-      photos = []
+      photos = [
+        "/static/wallingford/wallingford_carousel.jpg",
+        "/static/wallingford/wallingford_carousel_2.jpg",
+        "/static/wallingford/wallingford_carousel_3.jpg"
+      ]
     if ds.name == 'Fremont':
-      photos = []
+      photos = [
+        "/static/fremont/fremont_carousel.jpg",
+        "/static/fremont/fremont_carousel_2.jpg",
+        "/static/fremont/fremont_carousel_3.jpg"
+      ]
     if ds.name == 'Lower Queen Anne':
-      photos = []
+      photos = [
+        "/static/lowerqueenanne/lower_queen_anne_carousel.jpg",
+        "/static/lowerqueenanne/lower_queen_anne_carousel_2.jpg",
+        "/static/lowerqueenanne/lower_queen_anne_carousel_3.jpg"
+      ]
 
     import time
     time.sleep(0.5)
