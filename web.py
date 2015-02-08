@@ -2,7 +2,10 @@ from flask import *
 import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
+import geocoder
 from dataset import Neighborhood
+from pprint import pprint
+
 app = Flask(__name__)
 
 try:
@@ -26,19 +29,33 @@ def getPhotos(lat, lng):
 def home():
     return render_template('home.html', name='Hello')
 
+def try_get_neighborhood(address):
+    if address is None:
+      return ''
+
+    location = geocoder.google(address)
+
+    if location.ok:
+      return location.neighborhood
+    else:
+      return ''
+
 @app.route("/results", methods=["POST", "GET"])
 def results():
     if request.method == 'POST':
       # We're getting data from user
-      print request.form['current_address'], request.form['future_city']
+      neighborhood = try_get_neighborhood(request.form['current_address'])
+      print neighborhood, request.form['current_address'], request.form['future_city']
       pass
     else:
-      # For the demo
-      recommendations = [
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
-      ]
+      pass
+
+    # For the demo
+    recommendations = [
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
+    ]
 
     return render_template('results.html', recommendations=recommendations)
 
