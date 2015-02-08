@@ -21,7 +21,7 @@ except IOError:
 
 def getYelp(query, location, lat_lng):
     print "Query yelp for", query
-    search_results = yelp_api.search_query(term=query, limit=5, sort=2, radius_filter=5, location=location)
+    search_results = yelp_api.search_query(term=query, limit=5, sort=2, location=location)
     return search_results['businesses']
 
 def getPhotos(lat, lng):
@@ -66,15 +66,16 @@ def results():
 def explore(city, neighborhood):
     ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
 
+    location_query = ds.name + ', ' + city
     venues = [
-      VenueType("Restaurants", getYelp('food', ds.name, ds.lat_lng)),
-      VenueType("Cafes", getYelp('cafes', ds.name, ds.lat_lng)),
-      VenueType("Bars", getYelp('bars', ds.name, ds.lat_lng)),
-      VenueType("Nightclubs", getYelp('nightclubs', ds.name, ds.lat_lng)),
-      VenueType("Gyms", getYelp('gyms', ds.name, ds.lat_lng)),
-      VenueType("Parks", getYelp('parks', ds.name, ds.lat_lng)),
-      VenueType("Theaters", getYelp('theaters', ds.name, ds.lat_lng)),
-      VenueType("Markets", getYelp('markets', ds.name, ds.lat_lng))
+      VenueType("Restaurants", getYelp('restaurants', location_query, ds.lat_lng)),
+      VenueType("Cafes", getYelp('cafes', location_query, ds.lat_lng)),
+      VenueType("Bars", getYelp('bars', location_query, ds.lat_lng)),
+      VenueType("Nightclubs", getYelp('nightclubs', location_query, ds.lat_lng)),
+      VenueType("Gyms", getYelp('gyms', location_query, ds.lat_lng)),
+      VenueType("Parks", getYelp('parks', location_query, ds.lat_lng)),
+      VenueType("Theaters", getYelp('theaters', location_query, ds.lat_lng)),
+      VenueType("Markets", getYelp('markets', location_query, ds.lat_lng))
     ]
 
     # Hardcode for demo, otherwise get from flickr

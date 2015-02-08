@@ -60,11 +60,28 @@
         <div role="tabpanel" class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="{{vt.name}}" aria-labelledby="{{vt.name}}-tab">
           <h3>Top {{vt.name}}</h3>
           {% for v in vt.yelp_results %}
-            <h4><a href="{{v['url']}}">{{v['name']}}</a></h4>
-            <img src="{{v['rating_img_url']}}"/>
-            <img src="{{v['img_url']}}"/>
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-sm-2">
+                <img src="{{v['image_url']}}"/>
+              </div>
 
-            Venue: {{v}}
+              <div class="col-sm-9">
+                <h4 style="margin-top: 0; margin-bottom: 5px;"><a href="{{v['url']}}">{{v['name']}}</a></h4>
+
+                <div>
+                  <img src="{{v['rating_img_url']}}"/>
+                  &nbsp;
+                  {{v['review_count']}} reviews
+                </div>
+
+                {{v['display_address']}}
+
+                <div style="margin-top: 5px;">
+                  <p>"{{v['snippet_text']}}"</p>
+                </div>
+
+              </div>
+            </div>
           {% endfor %}
         </div>
       {% endfor %}
@@ -81,6 +98,22 @@
   <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/{{twitter_hashtag}}" data-widget-id="564280607295807489">#{{twitter_hashtag}} Tweets</a>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-  <h2>Find Housing</h2>
+  <h2>Housing</h2>
+
+  <div class="row">
+    {% for chart in nb.charts %}
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <p>{{chart[0]}}</p>
+          </div>
+
+          <img src="{{chart[1]}}" width="200px">
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <a href="{{nb.zillow_listings_url}}" class="btn btn-block btn-success">Browse Listings on Zillow</a>
 
 {% endblock %}
