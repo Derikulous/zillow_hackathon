@@ -3,9 +3,7 @@
 {% block body %}
 
 <div class="site-wrapper">
-
   <div class="site-wrapper-inner">
-
     <div class="cover-container">
 
       <div class="masthead clearfix">
@@ -15,23 +13,35 @@
       </div>
 
       <div class="inner cover">
-        <h1 class="cover-heading">Cover your page.</h1>
-        <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+        <h1 class="cover-heading">Hopcity. Where's your ideal location?</h1>
+        <p class="lead">Hopcity is designed to help you differentiate between neighborhoods.</p>
         <p class="lead">
-          <a href="#" class="btn btn-lg btn-default">Learn more</a>
+          <a href="#" class="btn btn-lg btn-default transparent-btn">Learn more</a>
         </p>
       </div>
 
-      <div class="mastfoot">
-        <div class="inner">
-          <p>Footer</p>
-        </div>
+      <div class="bottom-search-area hide-sm">
+        <div class="row">
+          <div class="col-lg-4 col-lg-offset-1">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Which Neighborhood are moving from?">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Go!</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+          <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Which neighborhood are you moving to?">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Go!</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 {% endblock %}
