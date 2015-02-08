@@ -3,7 +3,7 @@ from pprint import pprint
 
 from scrapy.selector import Selector
 
-from zillow_hackathon.data.parsers import xfirst, to_float
+from data.parsers import xfirst, to_float
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
