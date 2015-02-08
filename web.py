@@ -86,7 +86,7 @@ def results():
         Neighborhood.get_for_city_and_neighborhood('Seattle', 'Lower Queen Anne')
       ]
 
-    return render_template('results.html', recommendations=recommendations)
+    return render_template('results.html', recommendations=recommendations, back=['Change Search', '/'])
 
 def get_yelp_for_neighborhood(ds, city):
   yelp_cache_file = 'data/yelp_cache/' + ds.name + '.pickle'
@@ -131,8 +131,11 @@ def explore(city, neighborhood):
     if ds.name == 'Lower Queen Anne':
       photos = []
 
+    import time
+    time.sleep(0.5)
+
     hashtag = ''.join(string.capwords(neighborhood.lower()).split(' '))
-    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag)
+    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag, back=['Other Recommendations', '/results'])
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
