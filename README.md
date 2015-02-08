@@ -4,11 +4,11 @@
 
 ![landing](http://i.imgur.com/88aniHk.jpg "Landing page")
 
-![results](http://imgur.com/kqyCIqz "Results page")
+![results](http://i.imgur.com/kqyCIqz.png "Results page")
 
-![neighborhood](http://imgur.com/fsfGB7b "Neighborhood page")
+![neighborhood](http://i.imgur.com/fsfGB7b.png "Neighborhood page")
 
-![yelp](http://imgur.com/LR85yK2 "Yelp recommendations")
+![yelp](http://i.imgur.com/LR85yK2.png "Yelp recommendations")
 
 The application was created on February 6-8th, 2015. You can view it live [here](http://107.170.241.95/ "HopCity").
 
