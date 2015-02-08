@@ -79,13 +79,20 @@ def explore(city, neighborhood):
     ]
 
     # Hardcode for demo, otherwise get from flickr
-    photos = [
-      "/static/caphill/broadway31-900x500-fixed.jpg",
-      "/static/caphill/blockparty.jpg",
-      "/static/caphill/caphill2_900x500-fixed.jpg"
-    ]
+    if ds.name == 'Capitol Hill':
+      photos = [
+        "/static/caphill/broadway31-900x500-fixed.jpg",
+        "/static/caphill/blockparty.jpg",
+        "/static/caphill/caphill2_900x500-fixed.jpg"
+      ]
+    if ds.name == 'Wallingford':
+      photos = []
+    if ds.name == 'Fremont':
+      photos = []
+    if ds.name == 'Lower Queen Anne':
+      photos = []
 
-    hashtag = ''.join(string.capwords(city.lower()).split(' '))
+    hashtag = ''.join(string.capwords(neighborhood.lower()).split(' '))
     return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag)
 
 if __name__ == "__main__":

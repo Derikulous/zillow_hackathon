@@ -42,7 +42,7 @@
     <div class="col-md-12">
       <h1>{{nb.name}}</h1>
       <hr/>
-      <p>Capitol Hill is a densely populated residential district in Seattle, Washington, United States. It is one of the city's most prominent nightlife and entertainment districts, and the center of the city's gay and counterculture communities.</p>
+      <p>{{nb.description}}</p>
     </div>
   </div>
 
@@ -94,10 +94,9 @@
   <h2>Social</h2>
   <style type="text/css">
   iframe[id^='twitter-widget-']{ width:100% !important;}
-  </style>
-  <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/{{twitter_hashtag}}" data-widget-id="564280607295807489">#{{twitter_hashtag}} Tweets</a>
+  </style>  
+  <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/{{twitter_hashtag}}" data-widget-id="{{nb.twitter_widget_id}}">#{{twitter_hashtag}} Tweets</a>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
   <h2>Housing</h2>
 
   <div class="row">
@@ -114,6 +113,6 @@
     {% endfor %}
   </div>
 
-  <a href="{{nb.zillow_listings_url}}" class="btn btn-block btn-success">Browse Listings on Zillow</a>
+  <a href="{{nb.zillow_listings_url}}" class="btn btn-block btn-lg btn-success">Browse Listings on Zillow</a>
 
 {% endblock %}
