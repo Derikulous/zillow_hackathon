@@ -28,11 +28,17 @@ def home():
 
 @app.route("/results", methods=["POST", "GET"])
 def results():
-    recommendations = [
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
-      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
-    ]
+    if request.method == 'POST':
+      # We're getting data from user
+      print request.form['current_address'], request.form['future_city']
+      pass
+    else:
+      # For the demo
+      recommendations = [
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
+        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
+      ]
 
     return render_template('results.html', recommendations=recommendations)
 

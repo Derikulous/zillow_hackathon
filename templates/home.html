@@ -9,30 +9,38 @@
       <div class="masthead clearfix">
       </div>
 
-      <div class="inner cover">
-        <h1 class="cover-heading">What's your ideal neighborhood?</h1>
-        <p class="lead">Hopcity is designed to help you differentiate between neighborhoods.</p>
-        <p class="lead">
-          <a href="#" class="btn btn-lg btn-default transparent-btn">Learn more</a>
-        </p>
+      <div class="inner cover extra-dark">
+        <center>
+          <h1 class="cover-heading">What's your ideal neighborhood?</h1>
+          <p class="lead">HopCity finds neighborhoods that match your current lifestyle in a new city.</p>
+          <p class="lead">
+            <a href="#" class="btn btn-lg btn-default transparent-btn">Learn more</a>
+          </p>
+        </center>
       </div>
 
       <form action="/results" method="post">
         <div class="bottom-search-area hide-sm">
           <div class="row">
             <div class="col-sm-4 col-sm-offset-1">
-              <input type="text" class="form-control input-lg" placeholder="Which Neighborhood are moving from?">
-            </div><!-- /.col-lg-6 -->
-            <div class="col-sm-4 col-sm-offset-2">
-              <input type="text" class="form-control input-lg" placeholder="Which neighborhood are you moving to?">
-              </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
+              <div class="form-group">
+                <label for="current_address">Where do you live now?</label>
+                <input name="current_address" id="current_address" type="text" class="form-control input-lg" placeholder="3751 Lake Rd, Springfield, IL"/>
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <button type="submit" style="margin-top: 25px" class="btn btn-lg btn-success">Let's Match!</button>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="future_city">Which city are you moving to?</label>
+                <input name="future_city" id="future_city" type="text" class="form-control input-lg" placeholder="Seattle, WA"/>
+              </div>
+            </div>
+
           </div><!-- /.row -->
-          <span class="input-group-btn">
-          <p class="lead">
-            <button type="submit" class="btn btn-lg btn-success">Let's Match!</button>
-          </p>
-        </span>
         </div>
       </div>
     </form>
