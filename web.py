@@ -2,6 +2,7 @@ from flask import *
 import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
+from dataset import Neighborhood
 app = Flask(__name__)
 
 try:
@@ -31,7 +32,8 @@ def results():
 
 @app.route("/explore/<city>/<neighborhood>")
 def explore(city, neighborhood):
-    abort(404)
+    ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
+    return render_template('explore.html', nb=ds)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
