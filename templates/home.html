@@ -19,7 +19,7 @@
         </center>
       </div>
 
-      <form action="/results" method="post">
+      <form class="address_form" action="/results" method="post">
         <div class="bottom-search-area hide-sm">
           <div class="row">
             <div class="col-sm-4 col-sm-offset-1">
@@ -48,4 +48,8 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block javascript_footer %}
+  $('#current_address').geocomplete({ types: ['geocode'], componentRestrictions: { country: 'us' }, details: 'form' });
 {% endblock %}

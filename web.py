@@ -2,7 +2,12 @@ from flask import *
 import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
+import geocoder
 from dataset import Neighborhood
+from venues import *
+import string
+from pprint import pprint
+
 app = Flask(__name__)
 
 try:
@@ -14,9 +19,10 @@ try:
 except IOError:
     print "MISSING secrets.yaml: ask chris for this file or you'll have a bad time"
 
-def getYelpRestaraunts(location):
-    search_results = yelp_api.search_query(term="food", limit=10, sort=2, radius_filter=5, location=location)
-    return search_results
+def getYelp(query, location, lat_lng):
+    print "Query yelp for", query
+    search_results = yelp_api.search_query(term=query, limit=5, sort=2, radius_filter=5, location=location)
+    return search_results['businesses']
 
 def getPhotos(lat, lng):
     photos = list(flickr_api.walk(privacy_filter=1, lat=47.683937, lon=-122.27431, radius=5, per_page=5))
@@ -26,26 +32,60 @@ def getPhotos(lat, lng):
 def home():
     return render_template('home.html', name='Hello')
 
+def try_get_neighborhood(address):
+    if address is None:
+      return ''
+
+    location = geocoder.google(address)
+
+    if location.ok:
+      return location.neighborhood
+    else:
+      return ''
+
 @app.route("/results", methods=["POST", "GET"])
 def results():
     if request.method == 'POST':
       # We're getting data from user
-      print request.form['current_address'], request.form['future_city']
+      neighborhood = try_get_neighborhood(request.form['current_address'])
+      print neighborhood, request.form['current_address'], request.form['future_city']
       pass
     else:
-      # For the demo
-      recommendations = [
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
-        Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
-      ]
+      pass
+
+    # For the demo
+    recommendations = [
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Capitol Hill'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Ballard'),
+      Neighborhood.get_for_city_and_neighborhood('Seattle', 'Fremont')
+    ]
 
     return render_template('results.html', recommendations=recommendations)
 
 @app.route("/explore/<city>/<neighborhood>")
 def explore(city, neighborhood):
     ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
-    return render_template('explore.html', nb=ds, photos=[])
+
+    venues = [
+      VenueType("Restaurants", getYelp('food', ds.name, ds.lat_lng)),
+      VenueType("Cafes", getYelp('cafes', ds.name, ds.lat_lng)),
+      VenueType("Bars", getYelp('bars', ds.name, ds.lat_lng)),
+      VenueType("Nightclubs", getYelp('nightclubs', ds.name, ds.lat_lng)),
+      VenueType("Gyms", getYelp('gyms', ds.name, ds.lat_lng)),
+      VenueType("Parks", getYelp('parks', ds.name, ds.lat_lng)),
+      VenueType("Theaters", getYelp('theaters', ds.name, ds.lat_lng)),
+      VenueType("Markets", getYelp('markets', ds.name, ds.lat_lng))
+    ]
+
+    # Hardcode for demo, otherwise get from flickr
+    photos = [
+      "/static/caphill/broadway31-900x500-fixed.jpg",
+      "/static/caphill/blockparty.jpg",
+      "/static/caphill/caphill2_900x500-fixed.jpg"
+    ]
+
+    hashtag = ''.join(string.capwords(city.lower()).split(' '))
+    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
