@@ -89,7 +89,7 @@ class Recommender(object):
   MODEL_PATH = 'ml_model/recommender.pkl'
 
   def __init__(self):
-    self.max_results = 3
+    pass
 
   def train(self):
     self.data = Data()
@@ -107,7 +107,7 @@ class Recommender(object):
     return self.find_top_similar(n, target_city)
 
 
-  def find_top_similar(self, n, city, max = 5):
+  def find_top_similar(self, n, city):
     res = []
 
     v_spec = self.spec_featurizer.featurize_single(n)
@@ -123,7 +123,7 @@ class Recommender(object):
         res.append((i, sim))
 
     res =  sorted(res, key=lambda p: [ -p[1] ])
-    for r in islice(res, self.max_results):
+    for r in islice(res, 10):
         id = r[0]
         sim = r[1]
 
