@@ -62,6 +62,17 @@ class Neighborhood:
   def median_age(self):
     return to_float(xfirst(self.sel, '//*[name="Median Age"]//neighborhood//text()'))
 
+  @property
+  def zillow_listings_url(self):
+    return xfirst(self.sel, '//response/links/main/text()')
+
+  @property
+  def charts(self):
+    names = self.sel.xpath("//response/charts/chart/name/text()").extract()
+    urls = self.sel.xpath("//response/charts/chart/url/text()").extract()
+
+    return zip(names, urls)
+
 ################################################################################
 # Ad Hoc test
 ################################################################################
