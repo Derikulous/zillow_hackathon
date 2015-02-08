@@ -3,10 +3,11 @@ import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
 import geocoder
-from dataset import Neighborhood
+from zillow_hackathon.dataset import Neighborhood
 from venues import *
 import string
 from pprint import pprint
+import pickle
 
 from recommender import Recommender, NumFeaturizer, SpecFeaturizer, Data
 
@@ -27,7 +28,7 @@ def getYelp(query, location, lat_lng):
     return search_results['businesses']
 
 def getPhotos(lat, lng):
-    photos = list(flickr_api.walk(privacy_filter=1, lat=47.683937, lon=-122.27431, radius=5, per_page=5))
+    photos = list(flickr_api.walk(privacy_filter=1, lat=lat, lon=lng, radius=5, per_page=5))
     return photos
 
 @app.route("/")
@@ -47,38 +48,45 @@ def try_get_neighborhood_city(address):
 
 @app.route("/results", methods=["POST", "GET"])
 def results():
+    print request.form
     use_default = True
     enable_recommender = False
 
-    if request.method == 'POST':
-      geo_res = try_get_neighborhood_city(request.form['current_address'])
-      source_neighborhood = geo_res[0]
-      source_city = geo_res[1]
+    try:
+      if request.method == 'POST':
+        geo_res = try_get_neighborhood_city(request.form['current_address'])
+        source_neighborhood = geo_res[0]
+        source_city = geo_res[1]
 
-      enable_recommender = bool(request.form.get('algo', False))
+        # enable_recommender = bool(request.form.get('algo', False))
 
-      target_city = request.form['future_city'].strip()
-      if len(target_city) > 0:
-        geo_res = try_get_neighborhood_city(target_city)
-        if not geo_res is None:
-          target_city = geo_res[1]
-          if target_city == 'SF':
-            target_city = 'San Francisco'
+        target_city = request.form['future_city'].strip()
+        if len(target_city) > 0:
+          geo_res = try_get_neighborhood_city(target_city)
+          if not geo_res is None:
+            target_city = geo_res[1]
+            if target_city == 'SF':
+              target_city = 'San Francisco'
 
-      if target_city is None:
-        target_city = 'Seattle'
+        if target_city is None:
+          target_city = 'Seattle'
 
-      if enable_recommender and not source_neighborhood is None:
-        print "Recommendations for moving from %s, %s to %s ..." % (source_neighborhood, source_city, target_city)
+        if enable_recommender and not source_neighborhood is None:
+          print "Recommendations for moving from %s, %s to %s ..." % (source_neighborhood, source_city, target_city)
 
-        recommender = Recommender.load()
+          recommender = Recommender.load()
 
-        result = recommender.recommend(source_city, source_neighborhood, target_city)
-        recommendations = [ (r, score) for r, score in result ]
-        print "Found %d recommendations" % len(recommendations)
+          result = recommender.recommend(source_city, source_neighborhood, target_city)
+          recommendations = [ (r, score) for r, score in result ]
+          print "Found %d recommendations" % len(recommendations)
 
-        if len(recommendations) > 0:
-          use_default = False
+          result = recommender.recommend(source_city, source_neighborhood, target_city)
+          recommendations = [ (r, score) for r, score in result ]
+
+          if len(recommendations) > 0:
+            use_default = False
+    except Exception as e:
+      print "Exception: ", e
 
     if use_default:
       # For the demo
@@ -90,14 +98,16 @@ def results():
       ]
 
     if enable_recommender:
-      return render_template('results_dyn.html', recommendations=recommendations)
+      return render_template('results_dyn.html', recommendations=recommendations, back=['Change Search', '/'])
     else:
-      return render_template('results_dyn.html', recommendations=recommendations)
+      return render_template('results.html', recommendations=recommendations, back=['Change Search', '/'])
 
-@app.route("/explore/<city>/<neighborhood>")
-def explore(city, neighborhood):
-    ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
-
+def get_yelp_for_neighborhood(ds, city):
+  yelp_cache_file = 'data/yelp_cache/' + ds.name + '.pickle'
+  try:
+    with open(yelp_cache_file) as f:
+      venues = pickle.load(f)
+  except IOError:
     location_query = ds.name + ', ' + city
     venues = [
       VenueType("Restaurants", getYelp('restaurants', location_query, ds.lat_lng)),
@@ -110,6 +120,17 @@ def explore(city, neighborhood):
       VenueType("Markets", getYelp('markets', location_query, ds.lat_lng))
     ]
 
+    with open(yelp_cache_file, 'wb') as f:
+      pickle.dump(venues, f)
+
+  return venues
+
+@app.route("/explore/<city>/<neighborhood>")
+def explore(city, neighborhood):
+    ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
+
+    venues = get_yelp_for_neighborhood(ds, city)
+
     # Hardcode for demo, otherwise get from flickr
     if ds.name == 'Capitol Hill':
       photos = [
@@ -118,14 +139,29 @@ def explore(city, neighborhood):
         "/static/caphill/caphill2_900x500-fixed.jpg"
       ]
     if ds.name == 'Wallingford':
-      photos = []
+      photos = [
+        "/static/wallingford/wallingford_carousel.jpg",
+        "/static/wallingford/wallingford_carousel_2.jpg",
+        "/static/wallingford/wallingford_carousel_3.jpg"
+      ]
     if ds.name == 'Fremont':
-      photos = []
+      photos = [
+        "/static/fremont/fremont_carousel.jpg",
+        "/static/fremont/fremont_carousel_2.jpg",
+        "/static/fremont/fremont_carousel_3.jpg"
+      ]
     if ds.name == 'Lower Queen Anne':
-      photos = []
+      photos = [
+        "/static/lowerqueenanne/lower_queen_anne_carousel.jpg",
+        "/static/lowerqueenanne/lower_queen_anne_carousel_2.jpg",
+        "/static/lowerqueenanne/lower_queen_anne_carousel_3.jpg"
+      ]
+
+    import time
+    time.sleep(0.5)
 
     hashtag = ''.join(string.capwords(neighborhood.lower()).split(' '))
-    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag)
+    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag, back=['Other Recommendations', '/results'])
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

@@ -2,12 +2,55 @@
 
 {% block body %}
 
+<style>
+.thumbnail {
+  position: relative;
+}
+.stats {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  background-color: #06A150;
+  top: 20px;
+  opacity: 0.9;
+}
+.stats .fit {
+  color: white;
+  font-size: 1.4em;
+  margin-left: 10px;
+  margin-top: 5px;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.stats-lg {
+  width: 220px;
+  height: 70px;
+  top: 40px;
+}
+.fit-lg {
+  font-size: 3.0em !important;
+  margin-left: 20px !important;
+}
+
+.stats-success {
+  background-color: #18BC9C;
+}
+.stats-info {
+  background-color: #217DBB;
+}
+.stats-warning {
+  background-color: #F39C12;
+}
+</style>
 <div class="row">
   <div class="col-sm-12 col-md-12">
     <div class="thumbnail capHill">
+      <div class="stats stats-lg stats-warning">
+
+        <div class="fit fit-lg">96% Fit</div>
+        <div class="rent"></div>
+      </div>
       <img src="static/sea-cap-hill.png">
-      <p>98% fit <br> Median Rent = $1500
-      </p>
       <center>
         <h3>Capitol Hill</h3>
       </center>
@@ -19,30 +62,42 @@
 <div class="row">
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
-      <img src="/static/Seattle_-_Fremont_Cut_from_Eliza_Ferry_Leary_House_01.jpg" alt="Fremont">
+      <div class="stats">
+        <div class="fit">84% Fit</div>
+        <div class="rent"></div>
+      </div>
+
+      <img src="/static/Seattle_-_Fremont_Cut_from_Eliza_Ferry_Leary_House_01.jpg" alt="Fremont">      
       <div class="caption">
         <h3>Fremont</h3>
-        <p>84% Fit <br> Median Rent = $1000</p>
         <p><a href="/explore/Seattle/Fremont" class="btn btn-success btn-block" role="button">Learn More</a>
       </div>
     </div>
   </div>
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
+      <div class="stats">
+        <div class="fit">82% Fit</div>
+        <div class="rent"></div>
+      </div>
+
       <img src="/static/wallingford.jpg" alt="Wallingford" >
       <div class="caption">
         <h3>Wallingford</h3>
-        <p>82% Fit <br> Median Rent = $1200</p>
         <p><a href="/explore/Seattle/Wallingford" class="btn btn-success btn-block" role="button">Learn More</a>
       </div>
     </div>
   </div>
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
-      <img src="/static/queen-anne.jpg" alt="Queen Anne">
+      <div class="stats">
+        <div class="fit">72% Fit</div>
+        <div class="rent"></div>
+      </div>
+
+      <img src="/static/queen-anne.jpg" alt="Lower Queen Anne">
       <div class="caption">
         <h3>Lower Queen Anne</h3>
-        <p>72% Fit <br> Median Rent = $1300</p>
         <p><a href="/explore/Seattle/Lower Queen Anne" class="btn btn-success btn-block" role="button">Learn More</a>
       </div>
     </div>

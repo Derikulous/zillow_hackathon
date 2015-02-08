@@ -31,7 +31,7 @@ class Neighborhood:
 
   @staticmethod
   def get_neighborhoods():
-    with open(os.path.join(SCRIPT_DIR, 'data/output/nbr_zillow_clean.tsv')) as f:
+    with open(os.path.join(SCRIPT_DIR, '../data/output/nbr_zillow_clean.tsv')) as f:
       for l in f:
         parts = l.split('\t')
         yield Neighborhood(json.loads(parts[3]))
