@@ -3,6 +3,8 @@ import yaml
 from yelpapi import YelpAPI
 from flickrapi import FlickrAPI
 from dataset import Neighborhood
+from venues import *
+import string
 app = Flask(__name__)
 
 try:
@@ -14,9 +16,10 @@ try:
 except IOError:
     print "MISSING secrets.yaml: ask chris for this file or you'll have a bad time"
 
-def getYelpRestaraunts(location):
-    search_results = yelp_api.search_query(term="food", limit=10, sort=2, radius_filter=5, location=location)
-    return search_results
+def getYelp(query, location, lat_lng):
+    print "Query yelp for", query
+    search_results = yelp_api.search_query(term=query, limit=5, sort=2, radius_filter=5, location=location)
+    return search_results['businesses']
 
 def getPhotos(lat, lng):
     photos = list(flickr_api.walk(privacy_filter=1, lat=47.683937, lon=-122.27431, radius=5, per_page=5))
@@ -45,7 +48,27 @@ def results():
 @app.route("/explore/<city>/<neighborhood>")
 def explore(city, neighborhood):
     ds = Neighborhood.get_for_city_and_neighborhood(city, neighborhood)
-    return render_template('explore.html', nb=ds, photos=[])
+
+    venues = [
+      VenueType("Restaurants", getYelp('food', ds.name, ds.lat_lng)),
+      VenueType("Cafes", getYelp('cafes', ds.name, ds.lat_lng)),
+      VenueType("Bars", getYelp('bars', ds.name, ds.lat_lng)),
+      VenueType("Nightclubs", getYelp('nightclubs', ds.name, ds.lat_lng)),
+      VenueType("Gyms", getYelp('gyms', ds.name, ds.lat_lng)),
+      VenueType("Parks", getYelp('parks', ds.name, ds.lat_lng)),
+      VenueType("Theaters", getYelp('theaters', ds.name, ds.lat_lng)),
+      VenueType("Markets", getYelp('markets', ds.name, ds.lat_lng))
+    ]
+
+    # Hardcode for demo, otherwise get from flickr
+    photos = [
+      "/static/caphill/broadway31-900x500-fixed.jpg",
+      "/static/caphill/blockparty.jpg",
+      "/static/caphill/caphill2_900x500-fixed.jpg"
+    ]
+
+    hashtag = ''.join(string.capwords(city.lower()).split(' '))
+    return render_template('explore.html', nb=ds, venues=venues, photos=photos, twitter_hashtag=hashtag)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
